@@ -1,16 +1,43 @@
 import pygame
+import glob
 
 
 DISPLAY_SIZE = (640, 480)
 
 
+class ResourceManager:
+
+    resources_folder_path = 'resources'
+
+    def __init__(self):
+        self._resources = dict()
+
+    def load_resources(self):
+        for path in glob.glob(ResourceManager.resources_folder_path + '/*.png'):
+            name = path.split('\\')[-1].split('.')[0]
+            self._resources[name] = pygame.image.load(path).convert()
+
+    def get_resource(self, name):
+        return self._resources[name]
+
+
+class Level:
+
+    def __init__(self, background_name, resource_manager):
+        self._background = pygame.sprite.Sprite()
+        self._background.image = pygame.transform.scale(resource_manager.get_resource(background_name), DISPLAY_SIZE)
+        self._background.rect = self._background.image.get_rect()
+        self._spritegroup = pygame.sprite.Group()
+        self._spritegroup.add(self._background)
+
+    def draw(self, surf):
+        self._spritegroup.draw(surf)
+
+
 class GameWorld:
 
-    def __init__(self, start_x, start_y):
-        pass
-
-    def add_ball(self, ball):
-        pass
+    def __init__(self, resource_manager):
+        self._level = Level('background', resource_manager)
 
     def process_input_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -27,13 +54,13 @@ class GameWorld:
         pass
 
     def draw(self, surf):
-        pass
+        self._level.draw(surf)
 
 
 class Game:
 
-    def __init__(self, surf):
-        self._world = GameWorld(10, 10)
+    def __init__(self, surf, resource_manager):
+        self._world = GameWorld(resource_manager)
         self._surf = surf
 
     def loop(self):
@@ -50,7 +77,10 @@ class Game:
 pygame.init()
 screen = pygame.display.set_mode(DISPLAY_SIZE)
 
-game = Game(screen)
+resource_manager = ResourceManager()
+resource_manager.load_resources()
+
+game = Game(screen, resource_manager)
 clock = pygame.time.Clock()
 
 running = True
@@ -70,5 +100,3 @@ while running:
     pygame.display.flip()
 
 pygame.quit()
-
-print()
