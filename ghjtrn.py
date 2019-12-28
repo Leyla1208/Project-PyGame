@@ -22,7 +22,6 @@ class ResourceManager:
 
 print()
 
-
 class Level:
 
     def __init__(self, background_name, resource_manager):
