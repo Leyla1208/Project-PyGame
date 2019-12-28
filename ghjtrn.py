@@ -20,6 +20,8 @@ class ResourceManager:
     def get_resource(self, name):
         return self._resources[name]
 
+print()
+
 
 class Level:
 
