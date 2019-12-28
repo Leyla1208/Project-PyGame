@@ -1,81 +1,66 @@
 import pygame
+import glob
 
 
 DISPLAY_SIZE = (640, 480)
-new_file = 1
-BALL_SPEED = 50 / 1000
 
 
-class Text:
+class ResourceManager:
 
-    def __init__(self, x, y):
-        self._coords = (x, y)
+    resources_folder_path = 'resources'
 
-    def move(self, delta_pos):
-        self._coords = (self._coords[0] + delta_pos[0],
-                        self._coords[1] + delta_pos[1])
+    def __init__(self):
+        self._resources = dict()
 
-    def get_position(self):
-        return self._coords
+    def load_resources(self):
+        for path in glob.glob(ResourceManager.resources_folder_path + '/*.png'):
+            name = path.split('\\')[-1].split('.')[0]
+            self._resources[name] = pygame.image.load(path).convert()
+
+    def get_resource(self, name):
+        return self._resources[name]
+
+
+class Level:
+
+    def __init__(self, background_name, resource_manager):
+        self._background = pygame.sprite.Sprite()
+        self._background.image = pygame.transform.scale(resource_manager.get_resource(background_name), DISPLAY_SIZE)
+        self._background.rect = self._background.image.get_rect()
+        self._spritegroup = pygame.sprite.Group()
+        self._spritegroup.add(self._background)
+
+    def draw(self, surf):
+        self._spritegroup.draw(surf)
 
 
 class GameWorld:
 
-    def __init__(self, start_x, start_y):
-        self._player = Text(start_x, start_y)
-        self._balls = list()
-
-    def add_ball(self, ball):
-        global num_file
-        # Переключение текстов(файлов)
-        if num_file == 2:
-            new_surf = pygame.image.load('dog.bmp')
-            new_rect = new_surf.get_rect(bottomright=(400, 300))
-            screen.blit(new_surf, new_rect)
+    def __init__(self, resource_manager):
+        self._level = Level('background', resource_manager)
 
     def process_input_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             # Если нажали левую кнопку мыши
             # Замена текста Найти!!!!!
-            self.add_ball(Text(*event.pos))
+            pass
 
     def process_input_continues(self, pressed_keys, dt):
         # Переделать на фоновое изображение
 
-        if pressed_keys[pygame.K_UP]:
-            self._player.move((0, -BALL_SPEED * dt))
-        elif pressed_keys[pygame.K_DOWN]:
-            self._player.move((0, BALL_SPEED * dt))
-        elif pressed_keys[pygame.K_d]:
-            self._player.move((BALL_SPEED * dt, 0))
-        elif pressed_keys[pygame.K_a]:
-            self._player.move((-BALL_SPEED * dt, 0))
+        pass
 
     def update(self):
-        pl_x, pl_y = self._player.get_position()
-        for ball in self._balls:
-            bl_x, bl_y = ball.get_position()
-            dist_vector = (pl_x - bl_x, pl_y - bl_y)
-            dist = (dist_vector[0] ** 2 + dist_vector[1] ** 2) ** 0.5
-            if dist < 2 * 10:
-                pen_depth = 2 * 10 - dist
-                self._player.move((dist_vector[0] / dist * pen_depth,
-                                  dist_vector[1] / dist * pen_depth))
+        pass
 
     def draw(self, surf):
-        pl_x, pl_y = self._player.get_position()
-        pygame.draw.ellipse(surf, pygame.Color(255, 255, 255),
-                            (pl_x - 10, pl_y - 10, 20, 20))
-        for ball in self._balls:
-            bl_x, bl_y = ball.get_position()
-            pygame.draw.ellipse(surf, pygame.Color(255, 255, 255),
-                                (bl_x - 10, bl_y - 10, 20, 20))
+        self._level.draw(surf)
 
 
 class Game:
 
-    def __init__(self, surf):
-        self._world = GameWorld(10, 10)
+    def __init__(self, surf, resource_manager):
+        self._world = GameWorld(resource_manager)
         self._surf = surf
 
     def loop(self):
@@ -92,7 +77,10 @@ class Game:
 pygame.init()
 screen = pygame.display.set_mode(DISPLAY_SIZE)
 
-game = Game(screen)
+resource_manager = ResourceManager()
+resource_manager.load_resources()
+
+game = Game(screen, resource_manager)
 clock = pygame.time.Clock()
 
 running = True
