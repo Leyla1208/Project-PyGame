@@ -39,6 +39,19 @@ class ResourceManager:
         #  Разделить текст и сделать "кнопки выбора"
 
 
+class Level:
+
+    def __init__(self, background_name, resource_manager):
+        self._background = pygame.sprite.Sprite()
+        self._background.image = pygame.transform.scale(resource_manager.get_resource(background_name), DISPLAY_SIZE)
+        self._background.rect = self._background.image.get_rect()
+        self._spritegroup = pygame.sprite.Group()
+        self._spritegroup.add(self._background)
+
+    def draw(self, surf):
+        self._spritegroup.draw(surf)
+
+
 
 pygame.init()
 screen = pygame.display.set_mode(DISPLAY_SIZE)
