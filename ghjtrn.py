@@ -3,6 +3,16 @@ import glob
 
 
 DISPLAY_SIZE = (640, 480)
+dictionary = {'location_1': "Горная дорога1.jpg",
+          'location_2': "К-1.jpeg",
+          'location_3': "интерьер.jpg",
+          'location_4': "Гостевая комната.jpg",
+          'location_5': "Горная дорога.png",
+          'location_6': "Кухня.jpg",
+          'location_7': "Кухня.jpg",
+          'location_8': "Кухня.png",
+          'location_9': "шкаф.jpg",
+          'location_10': "входная дверь.jpg", }
 
 
 class ResourceManager:
@@ -11,33 +21,42 @@ class ResourceManager:
 
     def __init__(self, x, y):
         self._resources = dict()
-        self._x = x
-        self._y = y
         self._text = ''
+        self._num = 1
+        #  номер локации
+        self._location = f'location_{self._num}'
+        #  имя изображения
 
     def load_resources(self):
         #  создание словаря: ключ-имя -- значение-изображение
-        for path in glob.glob(ResourceManager.resources_folder_path + '/*.png'):
-            name = path.split('\\')[-1].split('.')[0]
-            self._resources[name] = pygame.image.load(path).convert()
         for path in glob.glob(ResourceManager.resources_folder_path + '/*.txt'):
             file = open(path)
             self._text = file.read()
 
     def get_resource(self, name):
-        pictures = name.draw(name)
+        pictures = name.draw(self._location)
         return pictures
 
-    def draw(self, name):
+    def draw(self):
         screen.fill(0, 0, 0)
-        pygame.transform.scale(name, (640, 480))
-        font = pygame.font.Font(None, 50)
+        pygame.transform.scale(open(slovar[self._location]), (640, 480))
+        font = pygame.font.Font(None, 18)
         text = font.render(f"{self._text}", 1, (200, 200, 255))
         screen.blit(text, (10, 370))
-        pygame.draw.rect(screen, (0, 0, 0), (0, 380, 640, 440), 1)
-        #  Движение текста и 40 пикселей на "кнопки"
+        pygame.draw.rect(screen, (0, 0, 0), (120, 140, 520, 360), 1)
+        font = pygame.font.Font(None, 14)
+        text = font.render('Остаться', 1, (200, 200, 255))
+        screen.blit(text, (130, 150))
+        pygame.draw.rect(screen, (0, 0, 0), (530, 370, 630, 470), 1)
+        font = pygame.font.Font(None, 14)
+        text = font.render('Остаться', 1, (200, 200, 255))
+        screen.blit(text, (130, 150))
+        pygame.draw.rect(screen, (0, 0, 0), (530, 370, 630, 470), 1)
+        font = pygame.font.Font(None, 14)
+        text = font.render('Остаться', 1, (200, 200, 255))
+        screen.blit(text, (130, 150))
+        pygame.draw.rect(screen, (0, 0, 0), (530, 370, 630, 470), 1)
         #  Разделить текст и сделать "кнопки выбора"
-
 
 class Level:
 
