@@ -52,7 +52,6 @@ class Level:
         self._spritegroup.draw(surf)
 
 
-
 pygame.init()
 screen = pygame.display.set_mode(DISPLAY_SIZE)
 
