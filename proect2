@@ -1,0 +1,811 @@
+import pygame
+import glob
+
+
+DISPLAY_SIZE = (1024, 768)
+slovar = {'location_1': "resources/Горная дорога1.jpg",
+          'location_2': "resources/К-1.jpeg",
+          'location_3': "resources/интерьер.jpg",
+          'location_4': "resources/Гостевая комната.jpg",
+          'location_5': "resources/Горная дорога.png",
+          'location_6': "resources/Кухня.jpg",
+          'location_7': "resources/Кухня.jpg",
+          'location_8': "resources/Кухня.png",
+          'location_9': "resources/шкаф.jpg",
+          'location_10': "resources/входная дверь.jpg",
+          'location_1_0': "resources/Локация_1.txt",}
+
+bags = list()
+num, all_out, back, further = 1, None, None, None
+
+
+class ResourceManager:
+
+    resources_folder_path = 'resources'
+
+    def __init__(self, num1):
+        self._resources = dict()
+        self._text = list()
+        self._num = num1
+        #  номер локации
+        self._location = f"location_{self._num}"
+        #  имя изображения
+
+    def load_resources(self):
+        #  создание словаря: ключ-имя -- значение-изображение
+        #  исправить !!!
+        for path in glob.glob('*.txt'):
+            file = open(path, encoding='utf8')
+            self._text.append(file.read())
+
+    def get_resource(self, name):
+        pictures = name.draw(self._location)
+        return pictures
+
+    def draw(self):
+        global further, back, all_out
+        screen.fill((0, 0, 0))
+        if self._num == 1:
+            kar = pygame.image.load(slovar[self._location]).convert()
+            self.image = pygame.transform.scale(kar, (1024, 768))
+            screen.blit(self.image, (0, 0))
+            #  Шрифт
+            font = pygame.font.Font(None, 18)
+            name = open('resources/location_1.txt', 'r', encoding='utf8')
+            text = font.render('asdf', 1, (200, 200, 255))
+            #  Текст   !!!!!!!!!!!!!!!!!
+            screen.blit(text, (10, 370))
+            #  Верхний левый угол
+            pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+            #  Тёмный фон
+            font = pygame.font.Font(None, 16)
+            text = font.render('Остаться', 1, (200, 200, 255))
+            screen.blit(text, (240, 700))
+            var1 = pygame.draw.rect(screen, (0, 0, 0), (230, 700, 200, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Пойти по дороге', 1, (200, 200, 255))
+            screen.blit(text, (440, 700))
+            var2 = pygame.draw.rect(screen, (0, 0, 0), (430, 700, 200, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Пойти к замку', 1, (200, 200, 255))
+            screen.blit(text, (640, 700))
+            var3 = pygame.draw.rect(screen, (0, 0, 0), (630, 700, 200, 100), 1)
+            for i in pygame.event.get():
+                if i.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(i.pos):
+                #
+                # elif rect_right.collidepoint(i.pos):
+                #
+                #
+                # if var1.collidepoint() is True:
+                        font = pygame.font.Font(None, 16)
+                        name = open('Локация_1_1.txt')
+                        text = font.render(name, 1, (200, 200, 255))
+                        screen.blit(text, (10, 370))
+                        pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                        font = pygame.font.Font(None, 16)
+                        text = font.render('Назад', 1, (200, 200, 255))
+                        screen.blit(text, (130, 370))
+                        back = pygame.draw.rect(screen, (0, 0, 0),
+                                                (230, 370, 100, 100), 1)
+                        font = pygame.font.Font(None, 16)
+                        text = font.render('Новая игра', 1, (200, 200, 255))
+                        screen.blit(text, (230, 370))
+                        all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                                   (340, 370, 100, 100), 1)
+                        font = pygame.font.Font(None, 16)
+                        text = font.render('Далее', 1, (200, 200, 255))
+                        screen.blit(text, (330, 370))
+                        further = pygame.draw.rect(screen, (0, 0, 0),
+                                                   (450, 370, 100, 100), 1)
+
+                # elif var2.collidepoint() is True:
+                    elif var2.collidepoint(i.pos):
+                        font = pygame.font.Font(None, 18)
+                        intro_text = open('resources/Локация_1_2.txt')
+                        text_coord = 50
+
+                        for line in intro_text:
+                            string_rendered = font.render(line, 1, pygame.Color('black'))
+                            intro_rect = string_rendered.get_rect()
+                            text_coord += 10
+                            intro_rect.top = text_coord
+                            intro_rect.x = 10
+                            text_coord += intro_rect.height
+                            screen.blit(string_rendered, intro_rect)
+
+
+                        # text = font.render(name, 1, (200, 200, 255))
+                        # screen.blit(text, (10, 370))
+                        pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                        font = pygame.font.Font(None, 16)
+                        text = font.render('Назад', 1, (200, 200, 255))
+                        screen.blit(text, (130, 370))
+                        back = pygame.draw.rect(screen, (0, 0, 0),
+                                                (230, 370, 100, 100), 1)
+                        font = pygame.font.Font(None, 16)
+                        text = font.render('Новая игра', 1, (200, 200, 255))
+                        screen.blit(text, (230, 370))
+                        all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                                   (340, 370, 100, 100), 1)
+                        font = pygame.font.Font(None, 16)
+                        text = font.render('Далее', 1, (200, 200, 255))
+                        screen.blit(text, (330, 370))
+                        further = pygame.draw.rect(screen, (0, 0, 0),
+                                                   (450, 370, 100, 100), 1)
+                    elif var3.collidepoint(i.pos):
+                # elif var3.collidepoint() is True:
+                        font = pygame.font.Font(None, 18)
+                        name = open('Локация_1_3.txt')
+                        text = font.render(name, 1, (200, 200, 255))
+                        screen.blit(text, (10, 370))
+                        pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                        font = pygame.font.Font(None, 16)
+                        text = font.render('Назад', 1, (200, 200, 255))
+                        screen.blit(text, (130, 370))
+                        back = pygame.draw.rect(screen, (0, 0, 0),
+                                                (230, 370, 100, 100), 1)
+                        font = pygame.font.Font(None, 16)
+                        text = font.render('Новая игра', 1, (200, 200, 255))
+                        screen.blit(text, (230, 370))
+                        all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                                   (340, 370, 100, 100), 1)
+                        font = pygame.font.Font(None, 16)
+                        text = font.render('Далее', 1, (200, 200, 255))
+                        screen.blit(text, (330, 370))
+                        further = pygame.draw.rect(screen, (0, 0, 0),
+                                                   (450, 370, 100, 100), 1)
+        elif self._num == 2:
+            kar = pygame.image.load(slovar[self._location]).convert()
+            pygame.transform.scale(kar, (640, 480))
+            font = pygame.font.Font(None, 18)
+            #  Шрифт
+            text = font.render(self._text[self._num], 1, (200, 200, 255))
+            #  Текст
+            screen.blit(text, (10, 370))
+            #  Верхний левый угол
+            pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+            #  Тёмный фон
+            font = pygame.font.Font(None, 16)
+            text = font.render('Отойти', 1, (200, 200, 255))
+            screen.blit(text, (130, 370))
+            var1 = pygame.draw.rect(screen, (0, 0, 0), (230, 370, 100, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Не заходить', 1, (200, 200, 255))
+            screen.blit(text, (230, 370))
+            var2 = pygame.draw.rect(screen, (0, 0, 0), (340, 370, 100, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Пройти к дом', 1, (200, 200, 255))
+            screen.blit(text, (330, 370))
+            var3 = pygame.draw.rect(screen, (0, 0, 0), (450, 370, 100, 100), 1)
+            if var1.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_2_1.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+            elif var2.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_2_2.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+            elif var3.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_2_3.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+        elif self._num == 3:
+            kar = pygame.image.load(slovar[self._location]).convert()
+            pygame.transform.scale(kar, (640, 480))
+            font = pygame.font.Font(None, 18)
+            #  Шрифт
+            text = font.render(self._text[self._num], 1, (200, 200, 255))
+            #  Текст
+            screen.blit(text, (10, 370))
+            #  Верхний левый угол
+            pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+            #  Тёмный фон
+            font = pygame.font.Font(None, 16)
+            text = font.render('Побыстрее уйти', 1, (200, 200, 255))
+            screen.blit(text, (130, 370))
+            var1 = pygame.draw.rect(screen, (0, 0, 0), (230, 370, 100, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Разговорить', 1, (200, 200, 255))
+            screen.blit(text, (230, 370))
+            var2 = pygame.draw.rect(screen, (0, 0, 0), (340, 370, 100, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Узнать совет', 1, (200, 200, 255))
+            screen.blit(text, (330, 370))
+            var3 = pygame.draw.rect(screen, (0, 0, 0), (450, 370, 100, 100), 1)
+            if var1.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_3_1.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+            elif var2.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_3_2.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+            elif var3.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_3_3.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+        elif self._num == 4:
+            kar = pygame.image.load(slovar[self._location]).convert()
+            pygame.transform.scale(kar, (640, 480))
+            font = pygame.font.Font(None, 18)
+            #  Шрифт
+            text = font.render(self._text[self._num], 1, (200, 200, 255))
+            #  Текст
+            screen.blit(text, (10, 370))
+            #  Верхний левый угол
+            pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+            #  Тёмный фон
+            font = pygame.font.Font(None, 16)
+            text = font.render('Правая дверь', 1, (200, 200, 255))
+            screen.blit(text, (130, 370))
+            var1 = pygame.draw.rect(screen, (0, 0, 0), (230, 370, 100, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Центральная дверь', 1, (200, 200, 255))
+            screen.blit(text, (230, 370))
+            var2 = pygame.draw.rect(screen, (0, 0, 0), (340, 370, 100, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Левая дверь', 1, (200, 200, 255))
+            screen.blit(text, (330, 370))
+            var3 = pygame.draw.rect(screen, (0, 0, 0), (450, 370, 100, 100), 1)
+            if var1.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_4_1.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+            elif var2.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_4_2.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+            elif var3.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_4_3.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+        elif self._num == 5:
+            kar = pygame.image.load(slovar[self._location]).convert()
+            pygame.transform.scale(kar, (640, 480))
+            font = pygame.font.Font(None, 18)
+            #  Шрифт
+            text = font.render(self._text[self._num], 1, (200, 200, 255))
+            #  Текст
+            screen.blit(text, (10, 370))
+            #  Верхний левый угол
+            pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+            #  Тёмный фон
+            font = pygame.font.Font(None, 16)
+            text = font.render('Продолжить беседу.', 1, (200, 200, 255))
+            screen.blit(text, (130, 370))
+            var1 = pygame.draw.rect(screen, (0, 0, 0), (230, 370, 100, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Оставить мальчика', 1, (200, 200, 255))
+            screen.blit(text, (230, 370))
+            var2 = pygame.draw.rect(screen, (0, 0, 0), (340, 370, 100, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Левая дверь', 1, (200, 200, 255))
+            screen.blit(text, (330, 370))
+            var3 = pygame.draw.rect(screen, (0, 0, 0), (450, 370, 100, 100), 1)
+            if var1.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_5_1.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+            elif var2.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_5_2.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+            elif var3.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_5_3.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+        elif self._num == 6:
+            kar = pygame.image.load(slovar[self._location]).convert()
+            pygame.transform.scale(kar, (640, 480))
+            font = pygame.font.Font(None, 18)
+            #  Шрифт
+            text = font.render(self._text[self._num], 1, (200, 200, 255))
+            #  Текст
+            screen.blit(text, (10, 370))
+            #  Верхний левый угол
+            pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+            #  Тёмный фон
+            font = pygame.font.Font(None, 16)
+            text = font.render('Правая дверь', 1, (200, 200, 255))
+            screen.blit(text, (130, 370))
+            var1 = pygame.draw.rect(screen, (0, 0, 0), (230, 370, 100, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Центральная дверь', 1, (200, 200, 255))
+            screen.blit(text, (230, 370))
+            var2 = pygame.draw.rect(screen, (0, 0, 0), (340, 370, 100, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Сумка', 1, (200, 200, 255))
+            screen.blit(text, (330, 370))
+            bag = pygame.draw.rect(screen, (0, 0, 0), (450, 370, 100, 100), 1)
+            if var1.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_6_1.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+            elif var2.collidepoint() is True:
+                    font = pygame.font.Font(None, 18)
+                    name = open('Локация_6_2.txt')
+                    text = font.render(name, 1, (200, 200, 255))
+                    screen.blit(text, (10, 370))
+                    pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                    font = pygame.font.Font(None, 16)
+                    text = font.render('Назад', 1, (200, 200, 255))
+                    screen.blit(text, (130, 370))
+                    back = pygame.draw.rect(screen, (0, 0, 0),
+                                            (230, 370, 100, 100), 1)
+                    font = pygame.font.Font(None, 16)
+                    text = font.render('Новая игра', 1, (200, 200, 255))
+                    screen.blit(text, (230, 370))
+                    all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                               (340, 370, 100, 100), 1)
+                    font = pygame.font.Font(None, 16)
+                    text = font.render('Далее', 1, (200, 200, 255))
+                    screen.blit(text, (330, 370))
+                    further = pygame.draw.rect(screen, (0, 0, 0),
+                                               (450, 370, 100, 100), 1)
+            elif bag.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_6_3.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+
+        elif self._num == 7:
+            kar = pygame.image.load(slovar[self._location]).convert()
+            pygame.transform.scale(kar, (640, 480))
+            font = pygame.font.Font(None, 18)
+            #  Шрифт
+            text = font.render(self._text[self._num], 1, (200, 200, 255))
+            #  Текст
+            screen.blit(text, (10, 370))
+            #  Верхний левый угол
+            pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+            #  Тёмный фон
+            font = pygame.font.Font(None, 16)
+            text = font.render('Пойти в гостинную', 1, (200, 200, 255))
+            screen.blit(text, (130, 370))
+            var1 = pygame.draw.rect(screen, (0, 0, 0), (230, 370, 100, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Пойти к Фешиару', 1, (200, 200, 255))
+            screen.blit(text, (230, 370))
+            var2 = pygame.draw.rect(screen, (0, 0, 0), (340, 370, 100, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Сумка', 1, (200, 200, 255))
+            screen.blit(text, (330, 370))
+            bag = pygame.draw.rect(screen, (0, 0, 0), (450, 370, 100, 100), 1)
+            if var1.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_7_1.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+            elif var2.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_7_2.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+            elif bag.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_7_3.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Ноая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+
+        elif self._num == 2:
+            kar = pygame.image.load(slovar[self._location]).convert()
+            pygame.transform.scale(kar, (640, 480))
+            font = pygame.font.Font(None, 18)
+            #  Шрифт
+            text = font.render(self._text[self._num], 1, (200, 200, 255))
+            #  Текст
+            screen.blit(text, (10, 370))
+            #  Верхний левый угол
+            pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+            #  Тёмный фон
+            font = pygame.font.Font(None, 16)
+            text = font.render('Отойти', 1, (200, 200, 255))
+            screen.blit(text, (130, 370))
+            var1 = pygame.draw.rect(screen, (0, 0, 0), (230, 370, 100, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Не заходить', 1, (200, 200, 255))
+            screen.blit(text, (230, 370))
+            var2 = pygame.draw.rect(screen, (0, 0, 0), (340, 370, 100, 100), 1)
+            font = pygame.font.Font(None, 16)
+            text = font.render('Пройти к дом', 1, (200, 200, 255))
+            screen.blit(text, (330, 370))
+            var3 = pygame.draw.rect(screen, (0, 0, 0), (450, 370, 100, 100), 1)
+            if var1.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_2_1.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+            elif var2.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_2_2.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+            elif var3.collidepoint() is True:
+                font = pygame.font.Font(None, 18)
+                name = open('Локация_8_3.txt')
+                text = font.render(name, 1, (200, 200, 255))
+                screen.blit(text, (10, 370))
+                pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Назад', 1, (200, 200, 255))
+                screen.blit(text, (130, 370))
+                back = pygame.draw.rect(screen, (0, 0, 0),
+                                        (230, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Новая игра', 1, (200, 200, 255))
+                screen.blit(text, (230, 370))
+                all_out = pygame.draw.rect(screen, (0, 0, 0),
+                                           (340, 370, 100, 100), 1)
+                font = pygame.font.Font(None, 16)
+                text = font.render('Далее', 1, (200, 200, 255))
+                screen.blit(text, (330, 370))
+                further = pygame.draw.rect(screen, (0, 0, 0),
+                                           (450, 370, 100, 100), 1)
+
+
+class Mouse:
+    def __init__(self, x, y):
+        self._pass = [x, y]
+
+    def game(self):
+        global num
+        if 120 <= self[0] <= 220 and 370 <= self._pass[1] <= 470:
+            res = ResourceManager(num - 1)
+            res.load_resources()
+            res.draw()
+        elif 220 <= self._pass[0] <= 320 and 370 <= self._pass[1] <= 470:
+            res = ResourceManager(0)
+            res.load_resources()
+            res.draw()
+        elif 320 <= self._pass[0] <= 420 and 370 <= self._pass[1] <= 470:
+            num += 1
+            res = ResourceManager(num)
+            res.load_resources()
+            res.draw()
+
+
+pygame.init()
+screen = pygame.display.set_mode(DISPLAY_SIZE)
+
+resource_manager = ResourceManager(num)
+resource_manager.load_resources()
+
+#  game = Game(screen, resource_manager)
+# clock = pygame.time.Clock()
+
+running = True
+while running:
+
+    # clock.tick(50)
+    x_event, y_event = None, None
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        # elif event.type == pygame.MOUSEBUTTONDOWN:
+        #     # Mouse(*event.pos)
+        #     pass
+
+    # screen.fill((0, 0, 0))
+    resource_manager.draw()
+    pygame.display.flip()
+
+pygame.quit()
+print('New Game')
