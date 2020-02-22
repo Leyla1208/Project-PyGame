@@ -569,17 +569,13 @@ def start_screen():
     fon = pygame.transform.scale(load_image('background.png'), (DISPLAY_SIZE))
     # рисуется затемнение фона
     surf = pygame.Surface((DISPLAY_SIZE), pygame.SRCALPHA)
-
     # цикл увеличение прозрачности (фон проявляется)
-    screen.blit(fon, (0, 0))
-    surf.fill((0, 0, 0, 0))
-    screen.blit(surf,(0, 0))
-    # for k in range(255, 0, -10):
-    #     screen.blit(fon, (0, 91))
-    #     surf.fill((0, 0, 0, k))
-    #     screen.blit(surf,(0, 0))
-    #     pygame.display.flip()
-    #     time.sleep(0.1)
+    for k in range(255, 0, -10):
+        screen.blit(fon, (0, 0))
+        surf.fill((0, 0, 0, k))
+        screen.blit(surf,(0, 0))
+        pygame.display.flip()
+        time.sleep(0.1)
     font = pygame.font.Font(None, 50)
     text_coord = 450
     for line in intro_text:
