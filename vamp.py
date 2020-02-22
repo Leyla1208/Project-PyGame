@@ -5,24 +5,57 @@ import time
 import glob
 
 
-DISPLAY_SIZE = (1024, 768)
-slovar = {'location_1': "resources/Горная дорога1.jpg",
-          'location_2': "resources/К-1.jpeg",
-          'location_3': "resources/интерьер.jpg",
-          'location_4': "resources/Гостевая комната.jpg",
-          'location_5': "resources/Горная дорога.png",
-          'location_6': "resources/Кухня.jpg",
-          'location_7': "resources/Кухня.jpg",
-          'location_8': "resources/Кухня.png",
-          'location_9': "resources/шкаф.jpg",
-          'location_10': "resources/входная дверь.jpg",
-          'location_1_0': "resources/Локация_1.txt",}
+#  процедура принудительного выхода из игры
+def terminate():
+    pygame.quit()
+    sys.exit()
 
+#  процедура загрузки фона из файла
 def load_image(filename):
     fullname = os.path.join('resources', filename)
     image = pygame.image.load(fullname).convert_alpha()
     return image
 
+# процедура загрузки основного текста из файла
+def load_text(text_name):
+    font = pygame.font.Font(None, 24)
+    name = open(text_name, 'r', encoding='utf8')
+    text_coord = 320
+    for line in name:
+        string_rendered = font.render(line, 1, pygame.Color('white'))
+        intro_rect = string_rendered.get_rect()
+        text_coord += 10
+        intro_rect.top = text_coord
+        intro_rect.x = 10
+        text_coord += intro_rect.height
+        screen.blit(string_rendered, intro_rect)
+
+#  процедура рисования рамки кнопок внизу экрана
+def buttons_imgs():
+    button = load_image('buttons.png').convert_alpha()
+    buttons_img = pygame.transform.scale(button, (200, 75))
+    screen.blit(buttons_img, (20, 690))
+    screen.blit(buttons_img, (220, 690))
+    screen.blit(buttons_img, (420, 690))
+    screen.blit(buttons_img, (620, 690))
+    screen.blit(buttons_img, (820, 690))
+
+#  процедура печати текста на кнопках
+def buttons_text(text1, text2, text3):
+    font = pygame.font.Font(None, 22)
+    text = font.render('Выйти из игры', 1, (200, 200, 255))
+    screen.blit(text, (60, 720))
+    text = font.render(text1, 1, (200, 200, 255))
+    screen.blit(text, (260, 720))
+    text = font.render(text2, 1, (200, 200, 255))
+    screen.blit(text, (460, 720))
+    text = font.render(text3, 1, (200, 200, 255))
+    screen.blit(text, (660, 720))
+    text = font.render('Вернуться', 1, (200, 200, 255))
+    screen.blit(text, (860, 720))
+
+
+#  класс курсора (изменяет системный курсор на игровой)
 class Mouse_new(pygame.sprite.Sprite):
 
     def __init__(self):
@@ -36,160 +69,517 @@ class Mouse_new(pygame.sprite.Sprite):
         self.rect.y = y
 
 
-# class ResourceManager:
-#
-#     resources_folder_path = 'resources'
-#
-#     def __init__(self, num1):
-#         self._resources = dict()
-#         self._text = list()
-#         self._num = num1
-#         #  номер локации
-#         self._location = f"location_{self._num}"
-#         #  имя изображения
-#
-#     def load_resources(self):
-#         #  создание словаря: ключ-имя -- значение-изображение
-#         #  исправить !!!
-#         for path in glob.glob('*.txt'):
-#             file = open(path, encoding='utf8')
-#             self._text.append(file.read())
-#
-#     def get_resource(self, name):
-#         pictures = name.draw(self._location)
-#         return pictures
-#
-#     def draw(self):
-#         global further, back, all_out
-#         screen.fill((0, 0, 0))
-#         if self._num == 1:
-#             kar = pygame.image.load(slovar[self._location]).convert()
-#             self.image = pygame.transform.scale(kar, (1024, 768))
-#             screen.blit(self.image, (0, 0))
-#             #  Шрифт
-#             font = pygame.font.Font(None, 18)
-#             name = open('resources/location_1.txt', 'r', encoding='utf8')
-#             text = font.render('asdf', 1, (200, 200, 255))
-#             #  Текст   !!!!!!!!!!!!!!!!!
-#             screen.blit(text, (10, 370))
-#             #  Верхний левый угол
-#             pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
-#             #  Тёмный фон
-#             font = pygame.font.Font(None, 16)
-#             text = font.render('Остаться', 1, (200, 200, 255))
-#             screen.blit(text, (240, 700))
-#             var1 = pygame.draw.rect(screen, (0, 0, 0), (230, 700, 200, 100), 1)
-#             font = pygame.font.Font(None, 16)
-#             text = font.render('Пойти по дороге', 1, (200, 200, 255))
-#             screen.blit(text, (440, 700))
-#             var2 = pygame.draw.rect(screen, (0, 0, 0), (430, 700, 200, 100), 1)
-#             font = pygame.font.Font(None, 16)
-#             text = font.render('Пойти к замку', 1, (200, 200, 255))
-#             screen.blit(text, (640, 700))
-#             var3 = pygame.draw.rect(screen, (0, 0, 0), (630, 700, 200, 100), 1)
-#             for i in pygame.event.get():
-#                 if i.type == pygame.MOUSEBUTTONUP:
-#                     if var1.collidepoint(i.pos):
-#                 #
-#                 # elif rect_right.collidepoint(i.pos):
-#                 #
-#                 #
-#                 # if var1.collidepoint() is True:
-#                         font = pygame.font.Font(None, 16)
-#                         name = open('Локация_1_1.txt')
-#                         text = font.render(name, 1, (200, 200, 255))
-#                         screen.blit(text, (10, 370))
-#                         pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
-#                         font = pygame.font.Font(None, 16)
-#                         text = font.render('Назад', 1, (200, 200, 255))
-#                         screen.blit(text, (130, 370))
-#                         back = pygame.draw.rect(screen, (0, 0, 0),
-#                                                 (230, 370, 100, 100), 1)
-#                         font = pygame.font.Font(None, 16)
-#                         text = font.render('Новая игра', 1, (200, 200, 255))
-#                         screen.blit(text, (230, 370))
-#                         all_out = pygame.draw.rect(screen, (0, 0, 0),
-#                                                    (340, 370, 100, 100), 1)
-#                         font = pygame.font.Font(None, 16)
-#                         text = font.render('Далее', 1, (200, 200, 255))
-#                         screen.blit(text, (330, 370))
-#                         further = pygame.draw.rect(screen, (0, 0, 0),
-#                                                    (450, 370, 100, 100), 1)
-#
-#                 # elif var2.collidepoint() is True:
-#                     elif var2.collidepoint(i.pos):
-#                         font = pygame.font.Font(None, 18)
-#                         intro_text = open('resources/Локация_1_2.txt')
-#                         text_coord = 50
-#
-#                         for line in intro_text:
-#                             string_rendered = font.render(line, 1, pygame.Color('black'))
-#                             intro_rect = string_rendered.get_rect()
-#                             text_coord += 10
-#                             intro_rect.top = text_coord
-#                             intro_rect.x = 10
-#                             text_coord += intro_rect.height
-#                             screen.blit(string_rendered, intro_rect)
-#
-#
-#                         # text = font.render(name, 1, (200, 200, 255))
-#                         # screen.blit(text, (10, 370))
-#                         pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
-#                         font = pygame.font.Font(None, 16)
-#                         text = font.render('Назад', 1, (200, 200, 255))
-#                         screen.blit(text, (130, 370))
-#                         back = pygame.draw.rect(screen, (0, 0, 0),
-#                                                 (230, 370, 100, 100), 1)
-#                         font = pygame.font.Font(None, 16)
-#                         text = font.render('Новая игра', 1, (200, 200, 255))
-#                         screen.blit(text, (230, 370))
-#                         all_out = pygame.draw.rect(screen, (0, 0, 0),
-#                                                    (340, 370, 100, 100), 1)
-#                         font = pygame.font.Font(None, 16)
-#                         text = font.render('Далее', 1, (200, 200, 255))
-#                         screen.blit(text, (330, 370))
-#                         further = pygame.draw.rect(screen, (0, 0, 0),
-#                                                    (450, 370, 100, 100), 1)
-#                     elif var3.collidepoint(i.pos):
-#                 # elif var3.collidepoint() is True:
-#                         font = pygame.font.Font(None, 18)
-#                         name = open('Локация_1_3.txt')
-#                         text = font.render(name, 1, (200, 200, 255))
-#                         screen.blit(text, (10, 370))
-#                         pygame.draw.rect(screen, (0, 0, 0), (120, 140, 400, 220), 1)
-#                         font = pygame.font.Font(None, 16)
-#                         text = font.render('Назад', 1, (200, 200, 255))
-#                         screen.blit(text, (130, 370))
-#                         back = pygame.draw.rect(screen, (0, 0, 0),
-#                                                 (230, 370, 100, 100), 1)
-#                         font = pygame.font.Font(None, 16)
-#                         text = font.render('Новая игра', 1, (200, 200, 255))
-#                         screen.blit(text, (230, 370))
-#                         all_out = pygame.draw.rect(screen, (0, 0, 0),
-#                                                    (340, 370, 100, 100), 1)
-#                         font = pygame.font.Font(None, 16)
-#                         text = font.render('Далее', 1, (200, 200, 255))
-#                         screen.blit(text, (330, 370))
-#                         further = pygame.draw.rect(screen, (0, 0, 0),
-#                                                    (450, 370, 100, 100), 1)
+class ResourceManager(pygame.sprite.Sprite):
+
+    def __init__(self):
+        pass
+
+    def draw(self):
+        global num
+        self._num = num
+        screen.fill((0, 0, 0))
+        #  определяем области выбора варианта действий
+        var1 = pygame.draw.rect(screen, (0, 0, 0), (20, 668, 200, 100), 1)
+        var2 = pygame.draw.rect(screen, (0, 0, 0), (220, 668, 200, 100), 1)
+        var3 = pygame.draw.rect(screen, (0, 0, 0), (420, 668, 200, 100), 1)
+        var4 = pygame.draw.rect(screen, (0, 0, 0), (620, 668, 200, 100), 1)
+        var5 = pygame.draw.rect(screen, (0, 0, 0), (820, 668, 200, 100), 1)
+        # первая локация
+        if self._num == 1:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('Остаться', 'Пойти по дороге', 'Пойти к замку')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var2.collidepoint(event.pos):
+                        num = 101  #  вариант 1.1 развития событий
+                        resource_manager.draw()
+                    elif var3.collidepoint(event.pos):
+                        num = 102  #  вариант 1.2 развития событий
+                        resource_manager.draw()
+                    elif var4.collidepoint(event.pos):
+                        num = 2  #  вариант 1.3 развития событий
+                        resource_manager.draw()
+
+        # вариант 1.1 развития событий
+        elif self._num == 101:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('', 'Дальше', '')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var3.collidepoint(event.pos):
+                        finish_screen()
+                    elif var5.collidepoint(event.pos):
+                        num -= 100  #  вариант 1 развития событий
+                        resource_manager.draw()
+
+        # вариант 1.2 развития событий
+        elif self._num == 102:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('', 'Дальше', '')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var3.collidepoint(event.pos):
+                        finish_screen()
+                    elif var5.collidepoint(event.pos):
+                        num -= 101  #  вариант 1 развития событий
+                        resource_manager.draw()
+
+        # вторая локация
+        elif self._num == 2:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('Уйти подальше', 'Остаться у ворот', 'Пойти в дом')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var2.collidepoint(event.pos):
+                        num = 201  #  вариант 1.1 развития событий
+                        resource_manager.draw()
+                    elif var3.collidepoint(event.pos):
+                        num = 202  #  вариант 1.2 развития событий
+                        resource_manager.draw()
+                    elif var4.collidepoint(event.pos):
+                        num = 3  #  вариант 1.3 развития событий
+                        resource_manager.draw()
+
+        elif self._num == 201:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('', 'Дальше', '')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var3.collidepoint(event.pos):
+                        finish_screen()
+                    elif var5.collidepoint(event.pos):
+                        num -= 199  #  вариант 2 развития событий
+                        resource_manager.draw()
+
+        # вариант 1.2 развития событий
+        elif self._num == 202:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('', 'Дальше', '')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var3.collidepoint(event.pos):
+                        finish_screen()
+                    elif var5.collidepoint(event.pos):
+                        num -= 200  #  вариант 2 развития событий
+                        resource_manager.draw()
+
+        # третья локация
+        elif self._num == 3:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('Побыстрей закончить', 'Разговорить', 'Спросить совета')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var2.collidepoint(event.pos):
+                        num = 301  # вариант 3.1 развития событий
+                        resource_manager.draw()
+                    elif var3.collidepoint(event.pos):
+                        num = 4  # вариант 3.3 развития событий
+                        resource_manager.draw()
+                    elif var4.collidepoint(event.pos):
+                        num = 303  # вариант 3.2 развития событий
+                        resource_manager.draw()
+
+        elif self._num == 301:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('', 'Дальше', '')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var3.collidepoint(event.pos):
+                        finish_screen()
+                    elif var5.collidepoint(event.pos):
+                        num -= 298  # вариант 1 развития событий
+
+                        resource_manager.draw()
+
+            # вариант 3.3 развития событий
+
+        elif self._num == 303:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('', 'Дальше', '')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var3.collidepoint(event.pos):
+                        finish_screen()
+                    elif var5.collidepoint(event.pos):
+                        num -= 299  # вариант 1 развития событий
+                        resource_manager.draw()
+
+        # четвёртая локация
+        elif self._num == 4:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('Правая', 'Центральная', 'Левая')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var2.collidepoint(event.pos):
+                        num = 401  # вариант 3.1 развития событий
+                        resource_manager.draw()
+                    elif var3.collidepoint(event.pos):
+                        num = 402  # вариант 3.2 развития событий
+                        resource_manager.draw()
+                    elif var4.collidepoint(event.pos):
+                        num = 5  # вариант 3.3 развития событий
+                        resource_manager.draw()
+
+        elif self._num == 401:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('', 'Дальше', '')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var3.collidepoint(event.pos):
+                        finish_screen()
+                    elif var5.collidepoint(event.pos):
+                        num -= 397  # вариант 1 развития событий
+
+                        resource_manager.draw()
+
+            # вариант 3.2 развития событий
+
+        elif self._num == 402:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('', 'Дальше', '')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var3.collidepoint(event.pos):
+                        finish_screen()
+                    elif var5.collidepoint(event.pos):
+                        num -= 398  # вариант 1 развития событий
+                        resource_manager.draw()
+
+        # пятая локация
+        elif self._num == 5:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('Разговорить', 'Оставить', 'Помолчать')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var2.collidepoint(event.pos):
+                        num = 501  # вариант 3.1 развития событий
+                        resource_manager.draw()
+                    elif var3.collidepoint(event.pos):
+                        num = 502  # вариант 3.2 развития событий
+                        resource_manager.draw()
+                    elif var4.collidepoint(event.pos):
+                        num = 6  # вариант 3.3 развития событий
+                        resource_manager.draw()
+
+        elif self._num == 501:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('', 'Дальше', '')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var3.collidepoint(event.pos):
+                        finish_screen()
+                    elif var5.collidepoint(event.pos):
+                        num -= 496  # вариант 1 развития событий
+
+                        resource_manager.draw()
+
+            # вариант 3.2 развития событий
+
+        elif self._num == 502:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('', 'Дальше', '')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var3.collidepoint(event.pos):
+                        finish_screen()
+                    elif var5.collidepoint(event.pos):
+                        num -= 497  # вариант 1 развития событий
+                        resource_manager.draw()
+
+        # шестая локация
+        elif self._num == 6:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('Разговорить', 'Оставить', 'Помолчать')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var2.collidepoint(event.pos):
+                        num = 601  # вариант 3.1 развития событий
+                        resource_manager.draw()
+                    elif var3.collidepoint(event.pos):
+                        num = 602  # вариант 3.2 развития событий
+                        resource_manager.draw()
+                    elif var4.collidepoint(event.pos):
+                        num = 7  # вариант 3.3 развития событий
+                        resource_manager.draw()
+
+        elif self._num == 601:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('', 'Дальше', '')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var3.collidepoint(event.pos):
+                        finish_screen()
+                    elif var5.collidepoint(event.pos):
+                        num -= 595  # вариант 1 развития событий
+
+                        resource_manager.draw()
+
+            # вариант 3.2 развития событий
+
+        elif self._num == 602:
+            # загружаем картинку
+            kar = load_image(f'{num}.jpg').convert()
+            self.image = pygame.transform.scale(kar, (1024, 300))
+            screen.blit(self.image, (0, 0))
+            #  загружаем Текст
+            load_text(f'text/Локация{num}.txt')
+            #  рисуем рамки кнопок внизу экрана
+            buttons_imgs()
+            #  печатаем текст на кнопках
+            buttons_text('', 'Дальше', '')
+            #  события на экране
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if var1.collidepoint(event.pos):
+                        start_screen()
+                    elif var3.collidepoint(event.pos):
+                        finish_screen()
+                    elif var5.collidepoint(event.pos):
+                        num -= 596  # вариант 1 развития событий
+                        resource_manager.draw()
 
 def start_screen():
-    # intro_text = ["ЗАСТАВКА", "",
-    #               "Правила игры",
-    #               "Если в правилах несколько строк,",
-    #               "приходится выводить их построчно"]
+    global num
     intro_text = ["Лабиринты",
                   "СТРАХА"]
     # рисуется фон
-    fon = pygame.transform.scale(load_image('background.png'), (1024,576))
+    fon = pygame.transform.scale(load_image('background.png'), (DISPLAY_SIZE))
     # рисуется затемнение фона
     surf = pygame.Surface((DISPLAY_SIZE), pygame.SRCALPHA)
-    for k in range(255, 0, -10):
-        screen.blit(fon, (0, 91))
-        surf.fill((0, 0, 0, k))
-        screen.blit(surf,(0, 0))
-        pygame.display.flip()
-        time.sleep(0.2)
+
+    # цикл увеличение прозрачности (фон проявляется)
+    screen.blit(fon, (0, 0))
+    surf.fill((0, 0, 0, 0))
+    screen.blit(surf,(0, 0))
+    # for k in range(255, 0, -10):
+    #     screen.blit(fon, (0, 91))
+    #     surf.fill((0, 0, 0, k))
+    #     screen.blit(surf,(0, 0))
+    #     pygame.display.flip()
+    #     time.sleep(0.1)
     font = pygame.font.Font(None, 50)
     text_coord = 450
     for line in intro_text:
@@ -205,29 +595,43 @@ def start_screen():
             if event.type == pygame.QUIT:
                 terminate()
             elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                num = 1
                 return  # начинаем игру
         pygame.display.flip()
 
 
+# заставка Game Over
+def finish_screen():
+    # рисуется фон
+    fon = pygame.transform.scale(load_image('GameOver.jpg'), (DISPLAY_SIZE))
+    screen.blit(fon, (0, 0))
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+            elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                terminate()
+        pygame.display.flip()
+
+
 pygame.init()
+DISPLAY_SIZE = (1024, 768)
 screen = pygame.display.set_mode(DISPLAY_SIZE)
+pygame.display.set_caption('Лабиринты СТРАХА')
 all_sprites = pygame.sprite.Group()
 mouse_new = Mouse_new()
 all_sprites.add(mouse_new)
+# делаем системный курсор невидимым
 pygame.mouse.set_visible(False)
+# номер варианта развития событий
+num = 0
+resource_manager = ResourceManager()
 
-# resource_manager = ResourceManager(num)
-# resource_manager.load_resources()
-
-#  game = Game(screen, resource_manager)
-# clock = pygame.time.Clock()
-n = 0
 running = True
 while running:
     # Один раз показать заставку
-    if n == 0:
+    if num == 0:
         start_screen()
-        n += 1
     # clock.tick(50)
     x_event, y_event = None, None
     for event in pygame.event.get():
@@ -239,10 +643,8 @@ while running:
     pressed = pygame.mouse.get_pressed()
     pos = pygame.mouse.get_pos()
     all_sprites.update(pos[0], pos[1])
-    screen.fill((255, 0, 255))
+    resource_manager.draw()
     all_sprites.draw(screen)
-    # resource_manager.draw()
+
     pygame.display.flip()
 
-# pygame.quit()
-# print('New Game')
